@@ -24,6 +24,10 @@ public class BookRepository {
         return book;
     }
 
+    public List<Book> findAll(){
+        return new ArrayList<>(store.values());
+    }
+
     public Book findById(Long id) {
         return store.get(id);
     }
@@ -54,9 +58,14 @@ public class BookRepository {
         return resultList;
     }
 
+    public void deleteById(Long id){
+        store.remove(id);
+    }
+
     //S 테스트용 코드
     public void clear(){
         store.clear();
+        sequence = 0L;
     }
 
 }

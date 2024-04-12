@@ -2,7 +2,6 @@ package hello.libary;
 
 import hello.libary.book.Book;
 import hello.libary.book.BookRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,10 +34,18 @@ public class BookRepositoryTest {
     }
 
     @Test
+    @DisplayName("모든 책 검색")
+    void findAllTest(){
+        List<Book> bookList = bookRepository.findAll();
+        assertThat(bookList.size()).isSameAs(4);
+    }
+
+    @Test
     @DisplayName("ID로 책 검색")
     void findByIdTest(){
         Book book = new Book("spring", "Framework");
         Book springBook = bookRepository.save(book);
+
         assertThat(springBook).isEqualTo(bookRepository.findById(5L));
     }
 
@@ -47,16 +54,23 @@ public class BookRepositoryTest {
     void findByNameTest(){
         int size = bookRepository.findByName("java").size();
         assertThat(size).isSameAs(2);
-//        List<Book> list = bookRepository.findByName("java");
-//        for (Book book : list) {
-//            System.out.println("book = " + book);
-//        }
     }
 
     @Test
     @DisplayName("장르로 책 검색")
-    void findByGenre(){
+    void findByGenreTest(){
         int size = bookRepository.findByGenre("DB").size();
         assertThat(size).isSameAs(2);
+    }
+
+    @Test
+    @DisplayName("아이디로 책 삭제")
+    void deleteByIdTest(){
+        assertThat(bookRepository.findAll().size()).isSameAs(4);
+
+        bookRepository.deleteById(4L);
+        assertThat(bookRepository.findAll().size()).isSameAs(3);
+
+        assertThat(bookRepository.findById(4L)).isNull();
     }
 }
